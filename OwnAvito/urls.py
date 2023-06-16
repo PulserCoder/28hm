@@ -1,5 +1,5 @@
 """
-URL configuration for OwnAvito project.
+URL configuration for skypro_27 project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -14,15 +14,17 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
-from ads.views import AdsView, Ad, CatOne, AdDetailView
-from ads.views import Cat
+from django.urls import path, include
+from OwnAvito import settings
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('ads/', AdsView.as_view()),
-    path('ad/', Cat.as_view()),
-    path('cat/', Ad.as_view()),
-    path('cat/<int:pk>', CatOne.as_view()),
-    path('ad/<int:pk>', AdDetailView.as_view())
+    path("ad/", include("ads.urls_ads")),
+    path("cat/", include("ads.urls_category")),
+    path("user/", include("ads.urls_user")),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
